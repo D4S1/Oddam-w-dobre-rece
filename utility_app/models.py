@@ -7,9 +7,9 @@ class Category(models.Model):
 
 
 TYPES = [
-    ('fundacja', 'fundacja'),
-    ('organizacja pozarządowa', 'organizacja pozarządowa'),
-    ('zbiórka lokalna', 'zbiórka lokalna'),
+    ('Fundacja', 'Fundacja'),
+    ('Organizacja pozarządowa', 'Organizacja pozarządowa'),
+    ('Zbiórka lokalna', 'Zbiórka lokalna'),
 ]
 
 
