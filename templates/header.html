@@ -1,13 +1,13 @@
 <nav class="container container--70">
 
-    {% if user.authenticate %}
+    {% if user.is_authenticated %}
     <ul class="nav--actions">
           <li class="logged-user">
-            Witaj Agata
+              witaj {{user.first_name}}
             <ul class="dropdown">
               <li><a href="#">Profil</a></li>
               <li><a href="#">Moje zbiórki</a></li>
-              <li><a href="#">Wyloguj</a></li>
+              <li><a href="{% url 'users_app:logout' %}">Wyloguj</a></li>
             </ul>
           </li>
     </ul>
