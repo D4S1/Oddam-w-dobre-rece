@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from utility_app import models
+
 
 class LoginView(View):
 
@@ -52,3 +54,21 @@ class LogoutView(LoginRequiredMixin, View):
         logout(request)
         return redirect('utility_app:landing-page')
 
+
+class ProfileView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        # user data
+        name = request.user.first_name
+        surname = request.user.last_name
+        email = request.user.email
+        # donations
+        donations = models.Donation.objects.filter(user_id=request.user.pk)
+        donations = [(donation, ', '.join([category.name for category in donation.categories.all()])) for donation in donations]
+        print(donations)
+        return render(request, "users_app/user-profile.html", {
+            'name': name,
+            'surname': surname,
+            'email': email,
+            'donations': donations,
+        })

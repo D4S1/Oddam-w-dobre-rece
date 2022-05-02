@@ -5,7 +5,7 @@
           <li class="logged-user">
               witaj {{user.first_name}}
             <ul class="dropdown">
-              <li><a href="#">Profil</a></li>
+              <li><a href="{% url 'users_app:profile' %}">Profil</a></li>
               <li><a href="#">Moje zbiórki</a></li>
 
               {% if user.is_superuser %}

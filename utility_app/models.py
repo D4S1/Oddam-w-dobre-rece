@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     name = models.CharField(max_length=128)
 
+    def __str__(self):
+        return self.name
+
 
 TYPES = [
     ('Fundacja', 'Fundacja'),
@@ -35,3 +38,6 @@ class Donation(models.Model):
     pick_up_time = models.TimeField()
     pick_up_comment = models.TextField()
     user = models.ForeignKey(User, null=True, default=None, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"donation {self.pk}"
