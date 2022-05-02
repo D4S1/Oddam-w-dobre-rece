@@ -19,6 +19,9 @@ class Institution(models.Model):
     type = models.CharField(max_length=32, choices=TYPES)
     categories = models.ManyToManyField(Category)
 
+    def __str__(self):
+        return self.name
+
 
 class Donation(models.Model):
     quantity = models.IntegerField()

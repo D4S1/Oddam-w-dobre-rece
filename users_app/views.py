@@ -13,11 +13,9 @@ class LoginView(View):
     def post(self, request):
         username = request.POST['email']
         password = request.POST['password']
-        print(f"username -> {username} password -> {password}")
-        user = User.objects.filter(username=username, password=password)
-        # user = authenticate(username=username, password=password)
+        user = authenticate(username=username, password=password)
         if user:
-            login(request, user[0])
+            login(request, user)
             return redirect("utility_app:landing-page")
         return redirect("users_app:register")
 
@@ -37,7 +35,7 @@ class RegisterView(View):
         if password1 and password1 != password2:
             return render(request, "users_app/register.html", {'msg': "hasła nie są takie same"})
         if name and surname and email and password1:
-            new_user = User.objects.create(
+            new_user = User.objects.create_user(
                 first_name=name,
                 last_name=surname,
                 username=email,
@@ -48,7 +46,7 @@ class RegisterView(View):
         return render(request, "users_app/register.html", {'msg': "Wypełnij wszystkie pola"})
 
 
-class LogoutView(View, LoginRequiredMixin):
+class LogoutView(LoginRequiredMixin, View):
 
     def get(self, request):
         logout(request)

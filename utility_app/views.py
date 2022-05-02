@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from django.db.models import Sum
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from . import models
 
@@ -34,10 +35,13 @@ class LandingPageView(View):
         })
 
 
-class AddDonationView(View):
+class AddDonationView(LoginRequiredMixin, View):
 
     def get(self, request):
-        return render(request, 'utility_app/form.html')
+        categories = models.Category.objects.all()
+        return render(request, 'utility_app/form.html', {
+            'categories': categories,
+        })
 
     def post(self, request):
         pass
