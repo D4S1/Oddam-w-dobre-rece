@@ -80,3 +80,56 @@ class ArchiveDonationView(LoginRequiredMixin, View):
         donation.is_taken = True
         donation.save()
         return redirect('users_app:profile')
+
+
+class EditProfileView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        return render(request, 'users_app/edit-profile.html', {
+            'name': request.user.first_name,
+            'surname': request.user.last_name,
+            'email': request.user.email,
+        })
+
+    def post(self, request):
+        name = request.POST['name']
+        surname = request.POST['surname']
+        email = request.POST['email']
+        password = request.POST['password']
+        context = {
+                'name': request.user.first_name,
+                'surname': request.user.last_name,
+                'email': request.user.email,
+        }
+        if not authenticate(username=request.user.username, password=password):
+            context['msg'] = 'Nie poprawne hasło'
+            return render(request, 'users_app/edit-profile.html', context)
+        if name and surname and email:
+            update = User.objects.get(pk=request.user.pk)
+            update.first_name = name
+            update.last_name = surname
+            update.username, update.email = email, email
+            update.save()
+            return redirect("users_app:profile")
+
+        context['msg'] = 'Wypełnij wszystkie pola'
+        return render(request, 'users_app/edit-profile.html', context)
+
+
+class ChangePasswordView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        return render(request, 'users_app/change-password.html')
+
+    def post(self, request):
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        old_password = request.POST['old-password']
+        user = authenticate(username=request.user.username, password=old_password)
+        if not user:
+            return render(request, 'users_app/change-password.html', {'msg': 'Nie poprawne stare hasło'})
+        if password1 and password2 and password1 == password2:
+            user.set_password(password1)
+            user.save()
+            return redirect('users_app:profile')
+        return render(request, 'users_app/change-password.html', {'msg': 'Nie poprawne nowe hasło'})
