@@ -63,12 +63,20 @@ class ProfileView(LoginRequiredMixin, View):
         surname = request.user.last_name
         email = request.user.email
         # donations
-        donations = models.Donation.objects.filter(user_id=request.user.pk)
+        donations = models.Donation.objects.filter(user_id=request.user.pk).order_by('is_taken', '-pick_up_date')
         donations = [(donation, ', '.join([category.name for category in donation.categories.all()])) for donation in donations]
-        print(donations)
         return render(request, "users_app/user-profile.html", {
             'name': name,
             'surname': surname,
             'email': email,
             'donations': donations,
         })
+
+
+class ArchiveDonationView(LoginRequiredMixin, View):
+
+    def get(self, request, pk):
+        donation = models.Donation.objects.get(pk=pk)
+        donation.is_taken = True
+        donation.save()
+        return redirect('users_app:profile')

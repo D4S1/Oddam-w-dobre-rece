@@ -31,6 +31,7 @@
             <th>Ilość worków</th>
             <th>Kategorie</th>
             <th>Data odbioru</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
@@ -40,6 +41,12 @@
         <td>{{donation.0.quantity}}</td>
         <td>{{donation.1}}</td>
         <td>{{donation.0.pick_up_date}} {{donation.0.pick_up_time}}</td>
+
+        {% if donation.0.is_taken %}
+        <td>odebrane</td>
+        {% else %}
+        <td><a href="{% url 'users_app:archive-donation' donation.0.pk %}">oddaj</a></td>
+        {% endif %}
     </tr>
     {% endfor %}
     </tbody>
