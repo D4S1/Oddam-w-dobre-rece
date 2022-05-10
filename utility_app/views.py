@@ -39,8 +39,12 @@ class AddDonationView(LoginRequiredMixin, View):
 
     def get(self, request):
         categories = models.Category.objects.all()
+        institutions = models.Institution.objects.all()
+        organisations = [(organisation, ','.join(str(category.pk) for category in organisation.categories.all()))
+                         for organisation in institutions]
         return render(request, 'utility_app/form.html', {
             'categories': categories,
+            'organisations': organisations,
         })
 
     def post(self, request):
