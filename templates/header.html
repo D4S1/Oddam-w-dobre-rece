@@ -8,7 +8,7 @@
               <li><a href="{% url 'users_app:profile' %}">Profil</a></li>
               <li><a href="{% url 'users_app:edit-profile' %}">Ustawienia</a></li>
               <li><a href="{% url 'users_app:change-password' %}">Zmień hasło</a></li>
-              <li><a href="#">Moje zbiórki</a></li>
+              <li><a href="{% url 'users_app:donations' %}">Moje zbiórki</a></li>
 
               {% if user.is_superuser %}
                 <li><a href="/admin">Admin</a></li>
