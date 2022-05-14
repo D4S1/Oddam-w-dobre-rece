@@ -57,7 +57,8 @@
       <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/5</div>
 
-        <form id="donation-form" action="form-confirmation.html" method="post">
+        <form id="donation-form" action="" method="post">
+          {% csrf_token %}
           <!-- STEP 1: class .active is switching steps -->
           <div data-step="1" class="active">
             <h3>Zaznacz co chcesz oddać:</h3>
@@ -81,7 +82,7 @@
 
             <div class=" form-group form-group--checkbox">
               <label>
-                <input type="checkbox" name="categories" value="other" />
+                <input type="checkbox" name="category" value="other" />
                 <span class="checkbox"></span>
                 <span class="description">inne</span>
               </label>
@@ -117,7 +118,8 @@
             {% for organisation in organisations %}
             <div id="organisation" style="display: none" data-categories={{organisation.1}} class="form-group form-group--checkbox">
               <label>
-                <input id="v-organisation" type="radio" name="organization" value="{{organisation.0.pk}}" />
+                <input id="v-organisation" type="radio" name="organisation" data-type="{{organisation.0.type}}"
+                       data-organisation="{{organisation.0.name}}" value="{{organisation.0.pk}}" />
                 <span class="checkbox radio"></span>
                 <span class="description">
                   <div class="title">{{organisation.0.type}} “{{organisation.0.name}}”</div>
@@ -166,7 +168,7 @@
               <div class="form-section--column">
                 <h4>Termin odbioru</h4>
                 <div class="form-group form-group--inline">
-                  <label> Data <input id="v-date" type="date" name="data" /> </label>
+                  <label> Data <input id="v-date" type="date" name="date" /> </label>
                 </div>
 
                 <div class="form-group form-group--inline">
@@ -235,7 +237,7 @@
 
             <div class="form-group form-group--buttons">
               <button type="button" class="btn prev-step">Wstecz</button>
-              <button type="submit" class="btn">Potwierdzam</button>
+              <button id="end-btn" type="submit" class="btn">Potwierdzam</button>
             </div>
           </div>
         </form>
